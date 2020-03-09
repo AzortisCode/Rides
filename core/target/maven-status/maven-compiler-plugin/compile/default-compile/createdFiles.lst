@@ -1,0 +1,4 @@
+com\azortis\rides\CoasterRunnable.class
+com\azortis\rides\Rides.class
+com\azortis\rides\listeners\PlayerInteractListener.class
+com\azortis\rides\MinecraftVersion.class

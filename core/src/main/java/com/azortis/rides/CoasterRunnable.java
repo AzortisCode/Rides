@@ -7,18 +7,20 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+
 public class CoasterRunnable extends BukkitRunnable {
 
     private Rides plugin;
     private ArmorStand stand;
-    private Vector direction;
+    private HashMap<Long, Vector> path;
     private long maxTicks;
-    private int tick;
+    private long tick;
 
-    public CoasterRunnable(Rides plugin, ArmorStand stand, Vector direction, long maxTicks){
+    public CoasterRunnable(Rides plugin, ArmorStand stand, HashMap<Long, Vector> path, long maxTicks){
         this.plugin = plugin;
         this.stand = stand;
-        this.direction = direction;
+        this.path = path;
         this.maxTicks = maxTicks;
         this.tick = 0;
     }
@@ -29,10 +31,10 @@ public class CoasterRunnable extends BukkitRunnable {
             plugin.getNativeAPI().getCustomArmorStand(stand).setGravity(true);
         }
         if(tick <= maxTicks){
-            stand.setVelocity(direction);
+            stand.setVelocity(path.get(tick));
         }
         Location loc = stand.getLocation();
-        Bukkit.broadcastMessage(ChatColor.RED + "" + direction.length());
+        Bukkit.broadcastMessage(ChatColor.RED + "" + path.get(tick).length());
         Bukkit.broadcastMessage(ChatColor.GREEN + " tick: " + tick + " out of: " + maxTicks + ", x=" + loc.getX() + ", y=" + loc.getY() + ", z=" + loc.getZ());
         tick++;
     }

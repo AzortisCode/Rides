@@ -21,4 +21,3 @@ idea/*.iml
 *.ipr
 *.iws
 out/
-/target

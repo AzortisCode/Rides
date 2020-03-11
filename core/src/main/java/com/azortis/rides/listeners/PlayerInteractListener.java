@@ -1,6 +1,7 @@
 package com.azortis.rides.listeners;
 
 import com.azortis.rides.CoasterRunnable;
+import com.azortis.rides.PathPoint;
 import com.azortis.rides.Rides;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,7 +22,8 @@ import java.util.HashMap;
 public class PlayerInteractListener implements Listener {
 
     private Rides plugin;
-    private ArrayList<Location> pathPoints = new ArrayList<>();
+    private ArrayList<PathPoint> pathPoints = new ArrayList<>();
+    private double currentSpeed = 0.2;
 
     public PlayerInteractListener(Rides plugin){
         this.plugin = plugin;
@@ -32,12 +34,12 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event){
         if(event.getMaterial() == Material.DIAMOND_AXE && event.getAction() == Action.RIGHT_CLICK_BLOCK){
             if(event.getClickedBlock() != null) {
-                Location pathPoint = event.getClickedBlock().getLocation();
-                pathPoint.setX(pathPoint.getX() + .5);
-                pathPoint.setY(pathPoint.getY() + 1);
-                pathPoint.setZ(pathPoint.getZ() + .5);
-                pathPoints.add(pathPoint);
-                event.getPlayer().sendMessage("Added pathPoint: x=" + pathPoint.getX() + ", y=" + pathPoint.getY() + ", z=" + pathPoint.getZ());
+                Location location = event.getClickedBlock().getLocation();
+                location.setX(location.getX() + .5);
+                location.setY(location.getY() + 1);
+                location.setZ(location.getZ() + .5);
+                pathPoints.add(new PathPoint(location, currentSpeed));
+                event.getPlayer().sendMessage("Added pathPoint: x=" + location.getX() + ", y=" + location.getY() + ", z=" + location.getZ() + ", speed: " + currentSpeed);
             }
         }else if(event.getMaterial() == Material.STICK && event.getAction() == Action.RIGHT_CLICK_AIR){
             if(!pathPoints.isEmpty()) {
@@ -46,6 +48,12 @@ public class PlayerInteractListener implements Listener {
             } else{
                 event.getPlayer().sendMessage(ChatColor.GREEN + "Path was already empty!");
             }
+        } else if(event.getMaterial() == Material.GOLDEN_SHOVEL && event.getAction() == Action.RIGHT_CLICK_AIR){
+            currentSpeed = currentSpeed - 0.1;
+            event.getPlayer().sendMessage("Current speed decreased to: " + currentSpeed);
+        } else if(event.getMaterial() == Material.DIAMOND_SHOVEL && event.getAction() == Action.RIGHT_CLICK_AIR){
+            currentSpeed = currentSpeed + 0.1;
+            event.getPlayer().sendMessage("Current speed increased to: " + currentSpeed);
         }
     }
 
@@ -61,16 +69,15 @@ public class PlayerInteractListener implements Listener {
             event.getPlayer().sendMessage("Going to do vector math.");
             HashMap<Long, Vector> vectorPath = new HashMap<>();
             long currentTick = 0;
-            double speed = 0.2;
             for (int i = 0; i < (pathPoints.size() - 1); i++){
-                Bukkit.broadcastMessage(String.valueOf(i));
-                Location originPoint = pathPoints.get(i);
-                Location nextPoint = pathPoints.get(i + 1);
-                Vector direction = nextPoint.toVector().subtract(originPoint.toVector()).normalize();
-                double distance = nextPoint.distance(originPoint);
+                Location originLocation = pathPoints.get(i).getLocation();
+                Location nextLocation = pathPoints.get(i + 1).getLocation();
+                Vector direction = nextLocation.toVector().subtract(originLocation.toVector()).normalize();
+                double distance = nextLocation.distance(originLocation);
+                double speed = pathPoints.get(i).getSpeed();
                 double maxTicks = distance / speed;
                 long roundedMaxTicks = Math.round(maxTicks);
-                direction.multiply((distance/ roundedMaxTicks));
+                direction.multiply((distance / roundedMaxTicks));
                 for (int i1 = 0; i1 <= roundedMaxTicks; i1++){
                     if(i1 == 0 && i >= 1){
                         currentTick--;
@@ -88,7 +95,7 @@ public class PlayerInteractListener implements Listener {
                 armorStand.setVelocity(new Vector(0,0,0));
                 plugin.getNativeAPI().getCustomArmorStand(armorStand).setGravity(false);
                 Bukkit.broadcastMessage(ChatColor.RED + " x=" + entityLoc.getX() + ", y=" + entityLoc.getY() + ", z=" + entityLoc.getZ() + ", maxTicks: " + maxTicks);
-                Location endPoint = pathPoints.get(pathPoints.size() - 1);
+                Location endPoint = pathPoints.get(pathPoints.size() - 1).getLocation();
                 Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "endPoint loc: x=" + endPoint.getX() + ", y=" + endPoint.getY() + ", z=" + endPoint.getZ());
             }, maxTicks + 1);
         }

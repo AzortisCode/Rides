@@ -1,4 +1,4 @@
-package com.azortis.rides;
+package com.azortis.rides.objects;
 
 import org.bukkit.Location;
 

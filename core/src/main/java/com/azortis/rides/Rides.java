@@ -10,6 +10,8 @@ public final class Rides extends JavaPlugin {
     private MinecraftVersion minecraftVersion;
     private NativeAPI nativeAPI;
 
+    private RideManager rideManager;
+
     @Override
     public void onEnable(){
         fetchNativeAPI();

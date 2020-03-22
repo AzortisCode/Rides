@@ -64,7 +64,7 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler
+   /* @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
         if(event.getRightClicked() instanceof ArmorStand && pathPoints.size() > 1){
             Location standLoc = event.getRightClicked().getLocation();
@@ -119,6 +119,6 @@ public class PlayerInteractListener implements Listener {
                 Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "endPoint loc: x=" + endPoint.getX() + ", y=" + endPoint.getY() + ", z=" + endPoint.getZ());
             }, maxTicks + 1);
         }
-    }
+    }*/
 
 }

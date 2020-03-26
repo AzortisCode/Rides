@@ -1,7 +1,7 @@
 package com.azortis.rides;
 
-import com.azortis.rides.listeners.PlayerInteractListener;
 import com.azortis.rides.nativeAPI.NativeAPI;
+import com.azortis.rides.testing.PlayerInteractListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 

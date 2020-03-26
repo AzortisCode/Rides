@@ -1,4 +1,4 @@
 package com.azortis.rides.objects;
 
-public class Track {
+public class Path {
 }

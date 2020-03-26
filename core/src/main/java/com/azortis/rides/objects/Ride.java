@@ -3,12 +3,12 @@ package com.azortis.rides.objects;
 public class Ride {
 
     private String name;
-    private Track track;
+    private Path path;
     private Train train;
 
-    public Ride(String name, Track track, Train train) {
+    public Ride(String name, Path path, Train train) {
         this.name = name;
-        this.track = track;
+        this.path = path;
         this.train = train;
     }
 

@@ -2,6 +2,7 @@ package com.azortis.rides.testing;
 
 import com.azortis.rides.objects.PathPoint;
 import com.azortis.rides.utils.ConversionUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -38,13 +39,19 @@ public class PathCalculator {
             // Seat location for originPoint
             Location originLocation = originPoint.getLocation();
             originLocation.setDirection(direction);
-            float originCorrectedYaw = ConversionUtils.toNormalYaw(originPoint.getLocation().getYaw()); // Theta
-            Location originSeatCenterLocation = new Location(originLocation.getWorld(), Math.cos(originCorrectedYaw) + originLocation.getX(),
-                    originLocation.getY(), Math.sin(originCorrectedYaw) + originLocation.getZ());
-            Location originRightSeatLocation = new Location(originLocation.getWorld(), Math.cos(originCorrectedYaw - 90) + originSeatCenterLocation.getX(),
-                    originLocation.getY(), Math.sin(originCorrectedYaw - 90) + originSeatCenterLocation.getZ());
-            Location originLeftSeatLocation = new Location(originLocation.getWorld(), Math.cos(originCorrectedYaw + 90) + originSeatCenterLocation.getX(),
-                    originLocation.getY(), Math.sin(originCorrectedYaw + 90) + originSeatCenterLocation.getZ());
+            float originTheta = ConversionUtils.toNormalYaw(originPoint.getLocation().getYaw());
+            Location originSeatCenterLocation = new Location(originLocation.getWorld(), originLocation.getX() + Math.cos(Math.toRadians(originTheta)),
+                    originLocation.getY(), originLocation.getZ() + Math.sin(Math.toRadians(originTheta)));
+            Location originRightSeatLocation = new Location(originLocation.getWorld(), originSeatCenterLocation.getX() + Math.cos(Math.toRadians(originTheta + 90)),
+                    originLocation.getY(), originSeatCenterLocation.getZ() + Math.sin(Math.toRadians(originTheta + 90)));
+            Location originLeftSeatLocation = new Location(originLocation.getWorld(), originSeatCenterLocation.getX() + Math.cos(Math.toRadians(originTheta - 90)),
+                    originLocation.getY(), originSeatCenterLocation.getZ() + Math.sin(Math.toRadians(originTheta - 90)));
+
+
+            Bukkit.broadcastMessage("OriginLocation: x=" + originLocation.getX() + ", z=" + originLocation.getZ() + ". Theta: " + originTheta);
+            Bukkit.broadcastMessage("OriginSeatCenterLocation: x=" + originSeatCenterLocation.getX() + ", z=" + originSeatCenterLocation.getZ());
+            Bukkit.broadcastMessage("OriginRightSeatLocation: x=" + originRightSeatLocation.getX() + ", z=" + originRightSeatLocation.getZ());
+            Bukkit.broadcastMessage("OriginLeftSeatLocation: x=" + originLeftSeatLocation.getX() + ", z=" + originLeftSeatLocation.getZ());
 
 
             // Seat location for nextPoint
@@ -57,13 +64,13 @@ public class PathCalculator {
             nextDirection.normalize();
             Location nextLocation = nextPoint.getLocation();
             nextLocation.setDirection(nextDirection);
-            float nextCorrectedYaw = ConversionUtils.toNormalYaw(nextLocation.getYaw()); // Theta
-            Location nextSeatCenterLocation = new Location(nextLocation.getWorld(), Math.cos(nextCorrectedYaw) + nextLocation.getX(),
-                    nextLocation.getY(), Math.sin(nextCorrectedYaw) + nextLocation.getZ());
-            Location nextRightSeatLocation = new Location(nextLocation.getWorld(), Math.cos(nextCorrectedYaw - 90) + nextSeatCenterLocation.getX(),
-                    nextLocation.getY(), Math.sin(nextCorrectedYaw - 90) + nextSeatCenterLocation.getZ());
-            Location nextLeftSeatLocation = new Location(nextLocation.getWorld(), Math.cos(nextCorrectedYaw + 90) + nextSeatCenterLocation.getX(),
-                    nextLocation.getY(), Math.sin(nextCorrectedYaw + 90) + nextSeatCenterLocation.getZ());
+            float nextTheta = ConversionUtils.toNormalYaw(nextLocation.getYaw());
+            Location nextSeatCenterLocation = new Location(nextLocation.getWorld(), nextLocation.getX() + Math.cos(Math.toRadians(nextTheta)),
+                    nextLocation.getY(), nextLocation.getZ() + Math.sin(Math.toRadians(nextTheta)));
+            Location nextRightSeatLocation = new Location(nextLocation.getWorld(), nextSeatCenterLocation.getX() + Math.cos(Math.toRadians(nextTheta + 90)),
+                    nextLocation.getY(), nextSeatCenterLocation.getZ() + Math.sin(Math.toRadians(nextTheta + 90)));
+            Location nextLeftSeatLocation = new Location(nextLocation.getWorld(), nextSeatCenterLocation.getX() + Math.cos(Math.toRadians(nextTheta - 90)),
+                    nextLocation.getY(), nextSeatCenterLocation.getZ() + Math.sin(Math.toRadians(nextTheta - 90)));
 
             if(i == 0){
                 rightSeatOriginLocation = originRightSeatLocation;
@@ -98,7 +105,7 @@ public class PathCalculator {
                 }
                 // EulerAngles
                 if(i1 == roundedMaxTicks){
-                    EulerAngle eulerAngle = new EulerAngle(0, Math.toRadians(ConversionUtils.toMinecraftYaw(nextCorrectedYaw)), 0);
+                    EulerAngle eulerAngle = new EulerAngle(0, Math.toRadians(ConversionUtils.toMinecraftYaw(nextTheta)), 0);
                     mainStandEulerPath.put(currentTick, eulerAngle);
                     rightStandEulerPath.put(currentTick, eulerAngle);
                     leftStandEulerPath.put(currentTick, eulerAngle);

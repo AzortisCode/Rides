@@ -28,4 +28,35 @@ public class ConversionUtils {
         return yaw;
     }
 
+    /**
+     * Converts the -90 to 90 minecraft pitch and makes it a normal circle
+     * so it can be used in trigonometry calculations;
+     *
+     * @param pitch The minecraft pitch;
+     * @return A pitch rotation that can be used in trigonometry calculations.
+     */
+    public static float toNormalPitch(float pitch){
+        if(pitch < 0){
+            pitch = Math.abs(pitch);
+        }else if(pitch > 0){
+            pitch *= -1 + 360;
+        }
+        return pitch;
+    }
+
+    /**
+     * Converts the 270 to 90 pitch to a minecraft 90 to -90 one.
+     *
+     * @param pitch The normal pitch rotation
+     * @return A pitch rotation that follows minecraft conventions.
+     */
+    public static float toMinecraftPitch(float pitch){
+        if(pitch > 0 && pitch <= 90){
+            pitch *= -1;
+        }else if(pitch >= 270){
+            pitch = Math.abs(pitch - 360);
+        }
+        return pitch;
+    }
+
 }

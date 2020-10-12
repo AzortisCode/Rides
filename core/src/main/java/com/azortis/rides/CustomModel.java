@@ -16,16 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.tracked.path;
+package com.azortis.rides;
 
-import com.azortis.rides.tracked.TrackedRide;
+import lombok.Getter;
+import org.bukkit.Material;
 
-public class PathCalculator {
+@Getter
+public class CustomModel {
 
+    private final Material material;
+    private final int customModelData;
 
-
-    public PathCalculator(TrackedRide trackedRide){
-
+    public CustomModel(Material material, int customModelData) {
+        this.material = material;
+        this.customModelData = customModelData;
     }
 
 }

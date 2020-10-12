@@ -16,16 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.tracked.path;
+package com.azortis.rides.tracked;
 
-import com.azortis.rides.tracked.TrackedRide;
-
-public class PathCalculator {
-
-
-
-    public PathCalculator(TrackedRide trackedRide){
-
-    }
-
+public class TrackedRunnable {
 }

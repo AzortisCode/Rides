@@ -42,7 +42,6 @@ public class PathEditor {
     public PathEditor(Vector originsLocation){
         this.originsLocation = originsLocation;
         this.pathMap = new PathMap();
-
     }
 
     /**

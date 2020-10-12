@@ -16,16 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.tracked.path;
+package com.azortis.rides.tracked;
 
-import com.azortis.rides.tracked.TrackedRide;
+import com.azortis.rides.CustomModel;
+import com.azortis.rides.nativeAPI.RidesStand;
 
-public class PathCalculator {
+import java.util.List;
 
+public class Cart {
 
+    private transient RidesStand mainStand;
+    private CustomModel cartModel;
+    private List<Seat> seats;
 
-    public PathCalculator(TrackedRide trackedRide){
-
-    }
 
 }

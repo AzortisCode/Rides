@@ -16,16 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.tracked.path;
+package com.azortis.rides.tracked;
 
-import com.azortis.rides.tracked.TrackedRide;
+import com.azortis.rides.nativeAPI.RidesStand;
 
-public class PathCalculator {
+public class Seat {
 
-
-
-    public PathCalculator(TrackedRide trackedRide){
-
-    }
+    private transient RidesStand stand;
+    private float yawOffset;
+    private double yawDistance;
+    private float pitchOffset;
+    private double pitchDistance;
 
 }

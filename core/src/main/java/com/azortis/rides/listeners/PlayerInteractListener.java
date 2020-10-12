@@ -1,25 +1,19 @@
+/*
 package com.azortis.rides.listeners;
 
-import com.azortis.rides.CoasterRunnable;
-import com.azortis.rides.objects.Cart;
-import com.azortis.rides.objects.PathPoint;
+import com.azortis.rides.old.objects.PathPoint;
 import com.azortis.rides.Rides;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PlayerInteractListener implements Listener {
 
@@ -64,7 +58,8 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-   /* @EventHandler
+   */
+/* @EventHandler
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event){
         if(event.getRightClicked() instanceof ArmorStand && pathPoints.size() > 1){
             Location standLoc = event.getRightClicked().getLocation();
@@ -119,6 +114,8 @@ public class PlayerInteractListener implements Listener {
                 Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "endPoint loc: x=" + endPoint.getX() + ", y=" + endPoint.getY() + ", z=" + endPoint.getZ());
             }, maxTicks + 1);
         }
-    }*/
+    }*//*
 
-}
+
+}*/
+

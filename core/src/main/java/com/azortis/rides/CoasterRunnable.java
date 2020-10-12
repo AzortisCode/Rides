@@ -31,9 +31,9 @@ public class CoasterRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        if(!plugin.getNativeAPI().getCustomArmorStand(stand).hasGravity()){
+        /*if(!plugin.getNativeAPI().getCustomArmorStand(stand).hasGravity()){
             plugin.getNativeAPI().getCustomArmorStand(stand).setGravity(true);
-        }
+        }*/
         if(tick <= maxTicks){
             stand.setVelocity(path.get(tick));
             stand.setRotation(yawPath.get(tick) + stand.getLocation().getYaw(), pitchPath.get(tick) + stand.getLocation().getPitch());

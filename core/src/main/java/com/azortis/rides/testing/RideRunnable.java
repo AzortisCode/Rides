@@ -1,4 +1,4 @@
-package com.azortis.rides.testing;
+/*package com.azortis.rides.testing;
 
 import com.azortis.rides.Rides;
 import org.bukkit.entity.ArmorStand;
@@ -40,4 +40,4 @@ public class RideRunnable extends BukkitRunnable {
         }
         tick++;
     }
-}
+}*/

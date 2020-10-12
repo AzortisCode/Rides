@@ -9,14 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rides-nativeAPI</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>rides-v1_16_R2</artifactId>
+    <version>v1_16_R2</version>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <artifactId>spigot</artifactId>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azortis</groupId>
+            <artifactId>rides-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

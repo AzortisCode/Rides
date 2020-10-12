@@ -1,7 +1,8 @@
+/*
 package com.azortis.rides.testing;
 
 import com.azortis.rides.Rides;
-import com.azortis.rides.objects.PathPoint;
+import com.azortis.rides.old.objects.PathPoint;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -57,7 +60,12 @@ public class PlayerInteractListener implements Listener {
         if(event.getRightClicked() instanceof ArmorStand && pathPoints.size() > 1){
             World world = event.getPlayer().getWorld();
             PathCalculator pathCalculator = new PathCalculator(pathPoints);
+            ItemStack modelStack = new ItemStack(Material.DIAMOND_SWORD);
+            ItemMeta modelMeta = modelStack.getItemMeta();
+            modelMeta.setCustomModelData(21);
+            modelStack.setItemMeta(modelMeta);
             ArmorStand mainStand = plugin.getNativeAPI().spawnCustomArmorStand(world, event.getRightClicked().getLocation());
+            mainStand.getEquipment().setHelmet(modelStack);
             event.getRightClicked().remove();
             ArmorStand rightSeatStand = plugin.getNativeAPI().spawnCustomArmorStand(world, pathCalculator.getRightSeatOriginLocation());
             ArmorStand leftSeatStand = plugin.getNativeAPI().spawnCustomArmorStand(world, pathCalculator.getLeftSeatOriginLocation());
@@ -75,3 +83,4 @@ public class PlayerInteractListener implements Listener {
     }
 
 }
+*/

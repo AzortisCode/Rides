@@ -1,6 +1,6 @@
-package com.azortis.rides.testing;
+/*package com.azortis.rides.testing;
 
-import com.azortis.rides.objects.PathPoint;
+import com.azortis.rides.old.objects.PathPoint;
 import com.azortis.rides.utils.ConversionUtils;
 import com.azortis.rides.utils.TrigonometryUtils;
 import org.bukkit.Bukkit;
@@ -168,4 +168,4 @@ public class PathCalculator {
     public long getMaxTicks() {
         return maxTicks;
     }
-}
+}*/

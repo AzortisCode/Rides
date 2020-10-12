@@ -1,6 +1,6 @@
 package com.azortis.rides;
 
-import com.azortis.rides.nativeAPI.NativeAPI;
+import com.azortis.rides.nativeAPI.NMSBridge;
 import com.azortis.rides.testing.PlayerInteractListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class Rides extends JavaPlugin {
 
     private MinecraftVersion minecraftVersion;
-    private NativeAPI nativeAPI;
+    private NMSBridge nativeAPI;
 
     private RideManager rideManager;
 
@@ -21,7 +21,7 @@ public final class Rides extends JavaPlugin {
     private void fetchNativeAPI(){
         try {
             this.minecraftVersion = MinecraftVersion.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
-            this.nativeAPI = (NativeAPI) Class.forName("com.azortis.rides.nativeAPI." + minecraftVersion.getVersionString() + ".NativeImplementation").getConstructor().newInstance();
+            this.nativeAPI = (NMSBridge) Class.forName("com.azortis.rides.nativeAPI." + minecraftVersion.getVersionString() + ".NMSImplementation").getConstructor().newInstance();
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -31,7 +31,7 @@ public final class Rides extends JavaPlugin {
         return minecraftVersion;
     }
 
-    public NativeAPI getNativeAPI(){
+    public NMSBridge getNativeAPI(){
         return nativeAPI;
     }
 

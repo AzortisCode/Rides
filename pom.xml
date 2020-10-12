@@ -12,8 +12,7 @@
 
     <modules>
         <module>core</module>
-        <module>nativeAPI</module>
-        <module>v1_15_R1</module>
+        <module>v1_16_R2</module>
     </modules>
 
     <properties>
@@ -40,5 +39,14 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -18,12 +18,10 @@
 
 package com.azortis.rides.tracked.path;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PathMap implements Serializable {
-    private static final long serialVersionUID = 9053765944289630945L;
+public class PathMap {
 
     private final Map<Integer, PathPoint> pathPoints;
 
@@ -62,6 +60,10 @@ public class PathMap implements Serializable {
 
     public int size(){
         return pathPoints.size();
+    }
+
+    public Map<Integer, PathPoint> getPathPoints() {
+        return new HashMap<>(pathPoints);
     }
 
     public PathIterator getIterator(){

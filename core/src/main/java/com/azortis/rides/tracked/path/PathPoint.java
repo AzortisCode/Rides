@@ -22,11 +22,8 @@ import com.azortis.rides.tracked.TrackedRide;
 import lombok.Getter;
 import org.bukkit.util.Vector;
 
-import java.io.Serializable;
-
 @Getter
-public class PathPoint implements Serializable {
-    private static final long serialVersionUID = -551856799294811757L;
+public class PathPoint {
 
     /**
      * The XYZ-axis offset from {@link TrackedRide} origin {@link org.bukkit.Location}.

@@ -18,13 +18,19 @@
 
 package com.azortis.rides.nativeAPI;
 
-import com.azortis.rides.utils.EulerAngle;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.util.EulerAngle;
 
 public interface RidesStand {
 
     ArmorStand getBukkitStand();
 
-    void setHeadRotation(EulerAngle eulerAngle);
+    void setModelRotation(EulerAngle eulerAngle);
+
+    EulerAngle getModelRotation();
+
+    void setMoving(boolean moving);
+
+    boolean isMoving();
 
 }

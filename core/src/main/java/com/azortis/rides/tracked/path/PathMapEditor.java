@@ -23,9 +23,9 @@ import org.bukkit.util.Vector;
 import java.util.Map;
 
 /**
- * Used for internal Path editing.
+ * Used for internal PathMap editing.
  */
-public class PathEditor {
+public class PathMapEditor {
 
     private final Vector originsLocation;
     private final PathMap pathMap;
@@ -39,7 +39,7 @@ public class PathEditor {
      *
      * @param originsLocation The first {@link Vector} of the location of the path.
      */
-    public PathEditor(Vector originsLocation){
+    public PathMapEditor(Vector originsLocation){
         this.originsLocation = originsLocation;
         this.pathMap = new PathMap();
     }
@@ -50,7 +50,7 @@ public class PathEditor {
      * @param originsLocation The first {@link Vector} of the location of the path.
      * @param pathMap The existing {@link PathMap} to edit.
      */
-    public PathEditor(Vector originsLocation, PathMap pathMap){
+    public PathMapEditor(Vector originsLocation, PathMap pathMap){
         this.originsLocation = originsLocation;
         this.pathMap = pathMap;
     }
@@ -62,7 +62,7 @@ public class PathEditor {
      * @param appendCurrentIndex If it should append current index, instead of adding to the end of the chain.
      * @return PathEditor instance.
      */
-    public PathEditor addPoint(Vector pointLocation, boolean appendCurrentIndex){
+    public PathMapEditor addPoint(Vector pointLocation, boolean appendCurrentIndex){
         if(editing){
             pathMap.replacePoint(currentIndex, currentPoint);
         }else {
@@ -87,7 +87,7 @@ public class PathEditor {
      *
      * @return PathEditor instance.
      */
-    public PathEditor removePoint(){
+    public PathMapEditor removePoint(){
         if(currentIndex > pathMap.size()){
             currentIndex--;
         }else{
@@ -103,7 +103,7 @@ public class PathEditor {
      * @param index The index of the {@link PathPoint} to edit.
      * @return PathEditor instance.
      */
-    public PathEditor editPoint(int index){
+    public PathMapEditor editPoint(int index){
         if(editing){
             pathMap.replacePoint(currentIndex, currentPoint);
         }else {
@@ -121,7 +121,7 @@ public class PathEditor {
      * @param x The x-axis offset.
      * @return PathEditor instance.
      */
-    public PathEditor setX(double x){
+    public PathMapEditor setX(double x){
         double y = currentPoint.getY();
         double z = currentPoint.getZ();
         currentPoint = currentPoint.setLocation(x, y ,z);
@@ -134,7 +134,7 @@ public class PathEditor {
      * @param y The y-axis offset.
      * @return PathEditor instance.
      */
-    public PathEditor setY(double y){
+    public PathMapEditor setY(double y){
         double x = currentPoint.getX();
         double z = currentPoint.getZ();
         currentPoint = currentPoint.setLocation(x, y ,z);
@@ -147,7 +147,7 @@ public class PathEditor {
      * @param z The z-axis offset.
      * @return PathEditor instance.
      */
-    public PathEditor setZ(double z){
+    public PathMapEditor setZ(double z){
         double x = currentPoint.getX();
         double y = currentPoint.getY();
         currentPoint = currentPoint.setLocation(x, y ,z);
@@ -160,7 +160,7 @@ public class PathEditor {
      * @param speed The speed in blocks per tick.
      * @return PathEditor instance.
      */
-    public PathEditor setSpeed(double speed){
+    public PathMapEditor setSpeed(double speed){
         currentPoint = currentPoint.setSpeed(speed);
         return this;
     }
@@ -171,9 +171,9 @@ public class PathEditor {
      * @param yaw The yaw rotation in degrees.
      * @return PathEditor instance.
      */
-    public PathEditor setYaw(float yaw){
-        float pitch = currentPoint.getPitch();
-        float roll = currentPoint.getRoll();
+    public PathMapEditor setYaw(double yaw){
+        double pitch = currentPoint.getPitch();
+        double roll = currentPoint.getRoll();
         currentPoint = currentPoint.setDirection(yaw, pitch, roll);
         return this;
     }
@@ -184,9 +184,9 @@ public class PathEditor {
      * @param pitch The pitch rotation in degrees.
      * @return PathEditor instance.
      */
-    public PathEditor setPitch(float pitch){
-        float yaw = currentPoint.getYaw();
-        float roll = currentPoint.getRoll();
+    public PathMapEditor setPitch(double pitch){
+        double yaw = currentPoint.getYaw();
+        double roll = currentPoint.getRoll();
         currentPoint = currentPoint.setDirection(yaw, pitch, roll);
         return this;
     }
@@ -197,9 +197,9 @@ public class PathEditor {
      * @param roll The roll rotation in degrees.
      * @return PathEditor instance.
      */
-    public PathEditor setRoll(float roll){
-        float yaw = currentPoint.getYaw();
-        float pitch = currentPoint.getPitch();
+    public PathMapEditor setRoll(double roll){
+        double yaw = currentPoint.getYaw();
+        double pitch = currentPoint.getPitch();
         currentPoint = currentPoint.setDirection(yaw, pitch, roll);
         return this;
     }

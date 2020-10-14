@@ -16,20 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.nativeAPI;
+package com.azortis.rides.tracked.editor.path;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
-
-public interface NMSBridge {
-
-    RidesStand spawnRidesStand(World world, double x, double y, double z);
-
-    RidesStand spawnRidesStand(Location location);
-
-    boolean isRidesStand(ArmorStand armorStand);
-
-    void clearStands(World world);
-
+public class PathEditor {
 }

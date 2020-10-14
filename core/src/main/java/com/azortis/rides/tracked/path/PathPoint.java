@@ -36,11 +36,11 @@ public class PathPoint {
     private final double speed;
 
     /**
-     * The yaw, pitch & roll of the model of the cart.
+     * The yaw(Rotation), pitch & roll in degrees of the model of the cart.
      */
-    private final float yaw,pitch,roll;
+    private final double yaw, pitch, roll;
 
-    public PathPoint(double x, double y, double z, double speed, float yaw, float pitch, float roll){
+    public PathPoint(double x, double y, double z, double speed, double yaw, double pitch, double roll){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -58,7 +58,7 @@ public class PathPoint {
         return new PathPoint(x, y, z, speed, yaw, pitch, roll);
     }
 
-    public PathPoint setDirection(float yaw, float pitch, float roll){
+    public PathPoint setDirection(double yaw, double pitch, double roll){
         return new PathPoint(x, y, z, speed, yaw, pitch, roll);
     }
 

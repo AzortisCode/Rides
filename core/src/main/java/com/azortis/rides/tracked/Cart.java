@@ -20,14 +20,32 @@ package com.azortis.rides.tracked;
 
 import com.azortis.rides.CustomModel;
 import com.azortis.rides.nativeAPI.RidesStand;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Objects;
 
+@Getter
+@Setter
 public class Cart {
 
+    // Runtime assignment of main stand of cart.
     private transient RidesStand mainStand;
+
+    // Serializable values
     private CustomModel cartModel;
     private List<Seat> seats;
 
+    public void applyModel(){
+        ItemStack itemStack = new ItemStack(cartModel.getMaterial());
+        ItemMeta meta = itemStack.getItemMeta();
+        assert meta != null;
+        meta.setCustomModelData(cartModel.getCustomModelData());
+        itemStack.setItemMeta(meta);
+        Objects.requireNonNull(mainStand.getBukkitStand().getEquipment()).setHelmet(itemStack);
+    }
 
 }

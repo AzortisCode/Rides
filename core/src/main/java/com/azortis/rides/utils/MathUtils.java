@@ -18,13 +18,13 @@
 
 package com.azortis.rides.utils;
 
-import com.azortis.rides.tracked.path.PathPoint;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 public class MathUtils {
 
-    public static EulerAngle getDirection(PathPoint originPoint, PathPoint nextPoint){
-        // Pitch - x
+    /*public static EulerAngle getDirection(Vector originPoint, Vector nextPoint){
+        *//*/ Pitch - x
         double pitchZ = nextPoint.getZ() - originPoint.getZ();
         double pitchY = nextPoint.getY() - originPoint.getY();
         Vector pitchVector = new Vector(0, pitchY, pitchZ).normalize();
@@ -38,8 +38,20 @@ public class MathUtils {
         Vector yawVector = new Vector(yawX, 0 ,yawZ).normalize();
         yawX = yawVector.getX();
         yawZ = yawVector.getZ();
-        float y = new Double(Math.toDegrees(Math.atan(yawZ/yawX))).floatValue();
-        return new EulerAngle(x, y, 0);
+        float y = new Double(Math.toDegrees(Math.atan(yawZ/yawX))).floatValue();*
+
+
+        return new EulerAngle(0, 0, 0);
+    }*/
+
+    public static EulerAngle getDirection(Vector originPoint, Vector nextPoint){
+        double dX = nextPoint.getX() - originPoint.getBlockX();
+        double dY = nextPoint.getY() - originPoint.getY();
+        double dZ = nextPoint.getZ() - originPoint.getZ();
+
+        double pitch = Math.atan2(dZ, dY);
+        double yaw = Math.atan2((-dX), dZ); // Invert X, to fix unit circle quadrants.
+        return new EulerAngle(pitch, yaw, 0);
     }
 
 }

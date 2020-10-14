@@ -22,34 +22,41 @@ import com.azortis.rides.nativeAPI.NMSBridge;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collections;
+import java.util.List;
+
 public final class Rides extends JavaPlugin {
 
-    private MinecraftVersion minecraftVersion;
     private NMSBridge nativeAPI;
-
-    private RideManager rideManager;
+    private Metrics metrics;
 
     @Override
     public void onEnable(){
-        fetchNativeAPI();
-
-    }
-
-    private void fetchNativeAPI(){
-        try {
-            this.minecraftVersion = MinecraftVersion.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
-            this.nativeAPI = (NMSBridge) Class.forName("com.azortis.rides.nativeAPI." + minecraftVersion.getVersionString() + ".NMSImplementation").getConstructor().newInstance();
-        }catch (Exception ex){
-            ex.printStackTrace();
+        this.getLogger().info("Fetching server version...");
+        try{
+            String name = this.getServer().getClass().getPackage().getName();
+            String version = (name.substring(name.lastIndexOf('.') + 1)).replace("v", "").toUpperCase();
+            List<String> supportedVersions = Collections.singletonList("1_16_R2");
+            if(!supportedVersions.contains(version)){
+                this.getLogger().severe("Version: v" + version + " is not supported! Shutting down plugin...");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+            this.getLogger().info("Found version: v" + version + " loading nativeAPI...");
+            this.nativeAPI = (NMSBridge) Class.forName("com.azortis.rides.nativeAPI.v" + version + ".NMSImplementation").newInstance();
+        } catch (Exception e) {
+            this.getLogger().severe("Something went wrong couldn't load native implementation! Shutting down plugin...");
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
-    }
-
-    public MinecraftVersion getMinecraftVersion(){
-        return minecraftVersion;
+        this.metrics = new Metrics(this, 9116);
     }
 
     public NMSBridge getNativeAPI(){
         return nativeAPI;
     }
+
+
 
 }

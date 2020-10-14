@@ -19,52 +19,55 @@
 package com.azortis.rides.nativeAPI.v1_16_R2;
 
 import com.azortis.rides.nativeAPI.RidesStand;
-import com.azortis.rides.utils.EulerAngle;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.server.v1_16_R2.EntityArmorStand;
+import net.minecraft.server.v1_16_R2.EnumMoveType;
 import net.minecraft.server.v1_16_R2.Vector3f;
 import net.minecraft.server.v1_16_R2.World;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.util.EulerAngle;
 
+@Getter
+@Setter
 public class NativeRidesStand extends EntityArmorStand implements RidesStand {
 
-    @Getter
-    @Setter
     private ArmorStand bukkitStand;
+    private boolean moving;
 
     public NativeRidesStand(World world, double x, double y, double z) {
         super(world, x, y, z);
         this.noclip = true;
-        this.setMarker(false);
         this.setNoGravity(true);
+        this.moving = false;
     }
 
     @Override
-    public void setHeadRotation(EulerAngle eulerAngle) {
-        setHeadPose(toNativeRotations(eulerAngle));
+    public void setModelRotation(EulerAngle eulerAngle) {
+        this.yaw = this.lastYaw = (float) Math.toDegrees(eulerAngle.getY());
+        float pitch = (float) Math.toDegrees(eulerAngle.getX());
+        float roll = (float) Math.toDegrees(eulerAngle.getZ());
+        Vector3f nativeRotations = new Vector3f(pitch, 0 , roll);
+        this.setHeadPose(nativeRotations);
     }
 
-    private Vector3f toNativeRotations(EulerAngle eulerAngle){
-        float x = eulerAngle.getX();
-        if(x >= 0 && x <= 90){
-            x = Math.abs(x-90);
-        }else{
-            x = Math.abs(x-360)+90;
-        }
-        float y = eulerAngle.getY();
-        if(y >= 0 && y <= 90){
-            y+=270;
-        }else{
-            y-=90;
-        }
-        float z = eulerAngle.getZ();
-        if(z >= 0 && z <= 90){
-            z+=270;
-        }else{
-            z-=90;
-        }
-        return new Vector3f(x,y,z);
+    @Override
+    public EulerAngle getModelRotation() {
+        Vector3f nativeRotations = this.headPose;
+        double pitch = Math.toRadians(nativeRotations.getX());
+        double yaw = Math.toRadians(nativeRotations.getY());
+        double roll = Math.toRadians(nativeRotations.getZ());
+        return new EulerAngle(pitch, yaw, roll);
     }
 
+    // Used to give Velocity even while gravity is of.
+    @Override
+    protected float f(float f, float f1) {
+        this.aB = lastYaw;
+        this.aA = yaw;
+        if(moving){
+            move(EnumMoveType.SELF, getMot());
+        }
+        return 0.0f;
+    }
 }

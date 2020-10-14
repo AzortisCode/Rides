@@ -19,13 +19,27 @@
 package com.azortis.rides.tracked;
 
 import com.azortis.rides.nativeAPI.RidesStand;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Seat {
 
+    // Runtime assignment of Armor Stand.
     private transient RidesStand stand;
-    private float yawOffset;
+
+    // Serializable values for storing ride information.
+    private double yawOffset;
     private double yawDistance;
-    private float pitchOffset;
+    private double pitchOffset;
     private double pitchDistance;
+
+    public Seat(float yawOffset, double yawDistance, float pitchOffset, double pitchDistance) {
+        this.yawOffset = yawOffset;
+        this.yawDistance = yawDistance;
+        this.pitchOffset = pitchOffset;
+        this.pitchDistance = pitchDistance;
+    }
 
 }

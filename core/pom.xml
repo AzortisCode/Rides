@@ -23,7 +23,7 @@
     <parent>
         <artifactId>rides-parent</artifactId>
         <groupId>com.azortis</groupId>
-        <version>parent</version>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -49,7 +49,7 @@
             <groupId>com.azortis</groupId>
             <artifactId>rides-v1_16_R2</artifactId>
             <version>v1_16_R2</version>
-            <scope>compile</scope>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 

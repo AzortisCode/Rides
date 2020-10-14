@@ -18,5 +18,44 @@
 
 package com.azortis.rides.nativeAPI.v1_16_R2;
 
-public class NMSImplementation {
+import com.azortis.rides.nativeAPI.NMSBridge;
+import com.azortis.rides.nativeAPI.RidesStand;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R2.entity.CraftArmorStand;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+
+public class NMSImplementation  implements NMSBridge{
+
+    @Override
+    public RidesStand spawnRidesStand(World world, double x, double y, double z) {
+        CraftWorld craftWorld = ((CraftWorld)world);
+        NativeRidesStand nativeRidesStand = new NativeRidesStand(craftWorld.getHandle(), x, y, z);
+        craftWorld.addEntity(nativeRidesStand, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        nativeRidesStand.setBukkitStand((ArmorStand) nativeRidesStand.getBukkitEntity());
+        return nativeRidesStand;
+    }
+
+    @Override
+    public RidesStand spawnRidesStand(Location location) {
+        return spawnRidesStand(location.getWorld(), location.getX(), location.getY(), location.getZ());
+    }
+
+    @Override
+    public boolean isRidesStand(ArmorStand armorStand) {
+        return (((CraftArmorStand)armorStand).getHandle() instanceof NativeRidesStand);
+    }
+
+    @Override
+    public void clearStands(World world) {
+        CraftWorld craftWorld = (CraftWorld)world;
+        for (Object entity : craftWorld.getHandle().entitiesById.values()){
+            if(entity instanceof NativeRidesStand){
+                ((NativeRidesStand) entity).getBukkitEntity().remove();
+            }
+        }
+    }
+
 }

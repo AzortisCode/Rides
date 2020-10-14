@@ -18,27 +18,7 @@
 
 package com.azortis.rides.tracked;
 
-import com.azortis.rides.tracked.path.PathMap;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Location;
-
-@Getter
-@Setter
-public class TrackedRide {
-
-    private final String name;
-    private Location originLocation;
-    private String trainFile;
-    private String pathFile;
-
-    // Runtime assigned values.
-    private transient PathMap pathMap;
-    private transient Train train;
-
-    public TrackedRide(String name){
-        this.name = name;
-    }
+public class Train {
 
 
 

@@ -22,19 +22,22 @@ import com.azortis.rides.Rides;
 import com.azortis.rides.nativeAPI.RidesStand;
 import com.azortis.rides.tracked.Cart;
 import com.azortis.rides.tracked.Seat;
+import com.azortis.rides.tracked.editor.Editor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitTask;
 
 @Getter
-public class CartEditor {
+public class CartEditor implements Editor<Cart> {
 
     private final Rides plugin;
     private final Cart cart;
     private final Player editor;
+    private final int sessionId;
     private final Location location;
     private final CartVisualizer visualizer;
     private final BukkitTask visualizerTask;
@@ -43,10 +46,11 @@ public class CartEditor {
     @Setter
     private int selectedSeat = 0;
 
-    public CartEditor(Rides plugin, Cart cart, Player editor, Location location){
+    public CartEditor(Rides plugin, Cart cart, Player editor, int sessionId, Location location){
         this.plugin = plugin;
         this.cart = cart;
         this.editor = editor;
+        this.sessionId = sessionId;
         this.location = location;
 
         // Initialize all Armor Stands, and then Visualizer task.
@@ -68,11 +72,32 @@ public class CartEditor {
     public Seat createSeat(){
         Seat seat = new Seat(0, 0, 0,0);
         cart.getSeats().add(seat);
+        RidesStand seatStand = plugin.getNativeAPI().spawnRidesStand(location);
+        seat.setStand(seatStand);
         return seat;
     }
 
-    public Cart save(){
-        return null;
+    @Override
+    public Cart getResult() {
+        return cart;
+    }
+
+    @Override
+    public void save(){
+        // Stop the other 2 classes.
+        HandlerList.unregisterAll(cartListener);
+        visualizerTask.cancel();
+
+        // Remove runtime cart stands
+        cart.getMainStand().getBukkitStand().remove();
+        cart.setMainStand(null);
+        for (Seat seat : cart.getSeats()){
+            seat.getStand().getBukkitStand().remove();
+            seat.setStand(null);
+        }
+
+        // End Editing session
+
     }
 
 }

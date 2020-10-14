@@ -16,30 +16,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.tracked;
+package com.azortis.rides.tracked.editor;
 
-import com.azortis.rides.tracked.path.PathMap;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
-@Getter
-@Setter
-public class TrackedRide {
+public interface Editor<T> {
 
-    private final String name;
-    private Location originLocation;
-    private String trainFile;
-    private String pathFile;
+    Player getEditor();
 
-    // Runtime assigned values.
-    private transient PathMap pathMap;
-    private transient Train train;
+    int getSessionId();
 
-    public TrackedRide(String name){
-        this.name = name;
-    }
+    T getResult();
 
-
+    void save();
 
 }

@@ -18,8 +18,14 @@
 
 package com.azortis.rides.tracked;
 
+import com.azortis.rides.tracked.path.PathCache;
+
 public class TrackedRunnable {
 
 
+
+    public TrackedRunnable(TrackedRide trackedRide, PathCache path){
+
+    }
 
 }

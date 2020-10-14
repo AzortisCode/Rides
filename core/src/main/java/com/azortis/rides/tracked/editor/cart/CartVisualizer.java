@@ -48,14 +48,9 @@ public class CartVisualizer implements Runnable{
     public void run() {
         for (Seat seat : cart.getSeats()){
             if(!locationCache.containsKey(seat)){
+                // No need to check if offsets > 2PI since Origin theta = 0.
                 double yaw = seat.getYawOffset();
                 double pitch = seat.getPitchOffset();
-                if(yaw < 0){
-                    yaw+=360;
-                }
-                if(pitch < 0){
-                    pitch+=360;
-                }
                 double dx = -(Math.sin(yaw) * seat.getYawDistance());
                 double dy = Math.cos(pitch) * seat.getPitchDistance();
                 double dz = Math.cos(yaw) * seat.getYawDistance();

@@ -29,7 +29,7 @@ public class Seat {
     // Runtime assignment of Armor Stand.
     private transient RidesStand stand;
 
-    // Serializable values for storing ride information.
+    // Serializable values for storing ride information offsets are in Radians.
     private double yawOffset;
     private double yawDistance;
     private double pitchOffset;

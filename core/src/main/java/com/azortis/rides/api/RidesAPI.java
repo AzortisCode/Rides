@@ -16,23 +16,23 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azortis.rides.utils;
+package com.azortis.rides.api;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.azortis.rides.Rides;
 
-@Getter
-@Setter
-public class EulerAngle {
+public final class RidesAPI {
 
-    private final float x; // Pitch
-    private final float y; // Yaw
-    private final float z; // Roll
+    private static RidesAPI instance;
+    private static Rides plugin;
 
-    public EulerAngle(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public RidesAPI() {
+        instance = this;
     }
+
+    public static RidesAPI getInstance() {
+        return instance;
+    }
+
+
 
 }

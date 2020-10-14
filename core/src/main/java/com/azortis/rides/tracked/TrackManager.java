@@ -18,5 +18,21 @@
 
 package com.azortis.rides.tracked;
 
+import com.azortis.rides.Rides;
+import com.azortis.rides.tracked.path.PathMap;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class TrackManager {
+
+    private final Rides plugin;
+
+    private final Map<String, PathMap> pathMaps = new HashMap<>();
+    private final Map<String, Train> trainMap = new HashMap<>();
+
+    public TrackManager(Rides plugin){
+        this.plugin = plugin;
+    }
+
 }

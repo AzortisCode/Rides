@@ -45,7 +45,7 @@ public class MathUtils {
     }*/
 
     public static EulerAngle getDirection(Vector originPoint, Vector nextPoint){
-        double dX = nextPoint.getX() - originPoint.getBlockX();
+        double dX = nextPoint.getX() - originPoint.getX();
         double dY = nextPoint.getY() - originPoint.getY();
         double dZ = nextPoint.getZ() - originPoint.getZ();
 

@@ -1,15 +1,11 @@
 {
-  "id": 1,
-  "name": "MegaCoaster",
-  "pathPoints": [
-    {
-      "index": 0,
-      "x-cord": 11,
-      "y-cord": 11,
-      "z-cord": 10,
-      "yaw": 6,
-      "pitch": 90,
-      "speed": 0.2
-    }
-  ]
+  "name": "RollerCoaster",
+  "originLocation": {
+    "world": "world",
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "trainFile": "rc-train",
+  "pathFile": "rc-path"
 }

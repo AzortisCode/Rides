@@ -28,11 +28,13 @@ import org.bukkit.Location;
 public class TrackedRide {
 
     private final String name;
+    private boolean loadOnStart;
     private Location originLocation;
     private String trainFile;
     private String pathFile;
 
     // Runtime assigned values.
+    private transient boolean loaded;
     private transient PathMap pathMap;
     private transient Train train;
 

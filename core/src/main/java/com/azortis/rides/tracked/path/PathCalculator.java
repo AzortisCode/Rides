@@ -19,13 +19,51 @@
 package com.azortis.rides.tracked.path;
 
 import com.azortis.rides.tracked.TrackedRide;
+import com.azortis.rides.tracked.Train;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
-public class PathCalculator {
+import java.util.HashMap;
+import java.util.Map;
 
+public class PathCalculator implements Runnable{
 
+    // Read only
+    private final PathPoint originPoint;
+    private final PathIterator pathIterator;
+    private final Train train;
+
+    private final Map<Integer, Map<Long, Vector>> directionPathMap = new HashMap<>();
+    private final Map<Integer, Map<Long, EulerAngle>> rotationsPathMap = new HashMap<>();
+
+    private PathPoint currentOriginPoint;
+
+    private volatile boolean finished = false;
+    private volatile PathCache result;
 
     public PathCalculator(TrackedRide trackedRide){
+        this.pathIterator = trackedRide.getPathMap().getIterator();
+        this.originPoint = pathIterator.next();
+        this.train = trackedRide.getTrain();
+        this.currentOriginPoint = originPoint;
+    }
 
+    @Override
+    public void run() {
+        while(pathIterator.hasNext()){
+            PathPoint nextPoint = pathIterator.next();
+            Vector direction = nextPoint.toVector().subtract(currentOriginPoint.toVector());
+            
+        }
+        finished = true;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public PathCache getResult(){
+        return null;
     }
 
 }

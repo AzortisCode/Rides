@@ -34,15 +34,17 @@ public class PathIterator implements Iterator<PathPoint> {
 
     @Override
     public boolean hasNext() {
-        return (currentIndex +1) <= size;
+        return (currentIndex+1) <= size;
     }
 
     @Override
     public PathPoint next() {
         currentIndex++;
-        PathPoint pathPoint = pathPoints.get(currentIndex);
-        pathPoints.remove(currentIndex);
-        return pathPoint;
+        return pathPoints.get(currentIndex);
+    }
+
+    public void reset(){
+        currentIndex = 0;
     }
 
 }

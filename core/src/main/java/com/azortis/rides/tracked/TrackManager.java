@@ -20,19 +20,63 @@ package com.azortis.rides.tracked;
 
 import com.azortis.rides.Rides;
 import com.azortis.rides.tracked.path.PathMap;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class TrackManager {
 
     private final Rides plugin;
-
+    private final Map<String, TrackedRide> trackedRides = new HashMap<>();
     private final Map<String, PathMap> pathMaps = new HashMap<>();
-    private final Map<String, Train> trainMap = new HashMap<>();
+    private final Map<String, Train> trains = new HashMap<>();
+    private final Map<String, Cart> carts = new HashMap<>();
 
     public TrackManager(Rides plugin){
         this.plugin = plugin;
+        trackedRides.putAll(plugin.getSettingsManager().getTrackedRides());
+        pathMaps.putAll(plugin.getSettingsManager().getPaths());
+        trains.putAll(plugin.getSettingsManager().getTrains());
+        carts.putAll(plugin.getSettingsManager().getCarts());
+
+        for (TrackedRide trackedRide : trackedRides.values()){
+            if(trackedRide.isLoadOnStart()){
+                trackedRide.setLoaded(true);
+                PathMap pathMap = pathMaps.get(trackedRide.getPathFile());
+                trackedRide.setPathMap(pathMap);
+                Train train = trains.get(trackedRide.getTrainFile()).createCopy();
+                trackedRide.setTrain(train);
+
+                Cart mainCart = carts.get(train.getMainCartFile()).createCopy();
+                train.setMainCart(mainCart);
+                mainCart.setStandId(1);
+                mainCart.setCartId(0);
+                mainCart.setCartOffset(0);
+
+                int assignedStandIds = 2;
+                for (Seat seat : mainCart.getSeats()){
+                    seat.setStandId(assignedStandIds);
+                    assignedStandIds++;
+                }
+                for (int i = 1; i <= train.getCartFiles().size(); i++) {
+                    Cart cart = carts.get(train.getCartFiles().get(i)).createCopy();
+                    cart.setStandId(assignedStandIds);
+                    cart.setCartId(i);
+                    cart.setCartOffset(train.getCartOffsets().get(i));
+                    assignedStandIds++;
+                    for (Seat seat : cart.getSeats()){
+                        seat.setStandId(assignedStandIds);
+                        assignedStandIds++;
+                    }
+                }
+
+            }else{
+                trackedRide.setLoaded(false);
+            }
+        }
+
     }
 
 }

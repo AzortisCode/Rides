@@ -20,12 +20,16 @@ package com.azortis.rides.tracked;
 
 import com.azortis.rides.tracked.path.PathCache;
 
-public class TrackedRunnable {
+public class TrackedRunnable implements Runnable{
 
 
 
-    public TrackedRunnable(TrackedRide trackedRide, PathCache path){
+    public TrackedRunnable(TrackedRide trackedRide, PathCache pathCache){
 
     }
 
+    @Override
+    public void run() {
+
+    }
 }

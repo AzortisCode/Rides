@@ -26,14 +26,15 @@ import lombok.Setter;
 @Setter
 public class Seat {
 
-    // Runtime assignment of Armor Stand.
-    private transient RidesStand stand;
-
     // Serializable values for storing ride information offsets are in Radians.
     private double yawOffset;
     private double yawDistance;
     private double pitchOffset;
     private double pitchDistance;
+
+    // Runtime assigned values
+    private transient RidesStand stand;
+    private transient int standId;
 
     public Seat(float yawOffset, double yawDistance, float pitchOffset, double pitchDistance) {
         this.yawOffset = yawOffset;

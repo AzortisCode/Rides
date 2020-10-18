@@ -19,16 +19,23 @@
 package com.azortis.rides;
 
 import com.azortis.rides.nativeAPI.NMSBridge;
+import com.azortis.rides.settings.SettingsManager;
+import com.azortis.rides.tracked.TrackManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public final class Rides extends JavaPlugin {
 
     private NMSBridge nativeAPI;
     private Metrics metrics;
+
+    private SettingsManager settingsManager;
+    private TrackManager trackManager;
 
     @Override
     public void onEnable(){
@@ -51,10 +58,8 @@ public final class Rides extends JavaPlugin {
             return;
         }
         this.metrics = new Metrics(this, 9116);
-    }
-
-    public NMSBridge getNativeAPI(){
-        return nativeAPI;
+        this.settingsManager = new SettingsManager(this);
+        this.trackManager = new TrackManager(this);
     }
 
 

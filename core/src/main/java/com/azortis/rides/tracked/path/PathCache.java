@@ -18,5 +18,54 @@
 
 package com.azortis.rides.tracked.path;
 
-public class PathCache {
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+
+import java.io.Serializable;
+import java.util.Map;
+
+public class PathCache implements Serializable {
+    private static final long serialVersionUID = 3191402257770448636L;
+
+    private final Map<Integer, DirectionPath> directionPathMap;
+    private final Map<Integer, RotationPath> rotationPathMap;
+
+    public PathCache(Map<Integer, DirectionPath> directionPathMap, Map<Integer, RotationPath> rotationPathMap) {
+        this.directionPathMap = directionPathMap;
+        this.rotationPathMap = rotationPathMap;
+    }
+
+    public Map<Integer, DirectionPath> getDirectionPathMap() {
+        return directionPathMap;
+    }
+
+    public Map<Integer, RotationPath> getRotationPathMap() {
+        return rotationPathMap;
+    }
+
+    public static class DirectionPath {
+        private final Map<Long, Vector> vectorMap;
+
+        public DirectionPath(Map<Long, Vector> vectorMap) {
+            this.vectorMap = vectorMap;
+        }
+
+        public Map<Long, Vector> getVectorMap() {
+            return vectorMap;
+        }
+
+    }
+
+    public static class RotationPath {
+        private final Map<Long, EulerAngle> eulerAngleMap;
+
+        public RotationPath(Map<Long, EulerAngle> eulerAngleMap) {
+            this.eulerAngleMap = eulerAngleMap;
+        }
+
+        public Map<Long, EulerAngle> getEulerAngleMap() {
+            return eulerAngleMap;
+        }
+    }
+
 }

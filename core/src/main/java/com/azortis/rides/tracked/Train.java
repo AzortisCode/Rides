@@ -18,8 +18,36 @@
 
 package com.azortis.rides.tracked;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Getter
+@Setter
 public class Train {
 
+    // Serializable values
+    private String mainCartFile;
+    private Map<Integer, String> cartFiles;
+    private Map<Integer, Double> cartOffsets;
 
+    // Runtime values
+    private transient Cart mainCart;
+    private transient List<Cart> carts;
+
+    public Train(){}
+
+    private Train(String mainCartFile, Map<Integer, String> cartFiles, Map<Integer, Double> cartOffsets) {
+        this.mainCartFile = mainCartFile;
+        this.cartFiles = cartFiles;
+        this.cartOffsets = cartOffsets;
+    }
+
+    public Train createCopy(){
+        return new Train(mainCartFile, new HashMap<>(cartFiles), new HashMap<>(cartOffsets));
+    }
 
 }

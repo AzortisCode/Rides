@@ -25,6 +25,7 @@ import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,12 +33,24 @@ import java.util.Objects;
 @Setter
 public class Cart {
 
-    // Runtime assignment of main stand of cart.
-    private transient RidesStand mainStand;
-
     // Serializable values
-    private CustomModel cartModel;
+    private final CustomModel cartModel;
     private List<Seat> seats;
+
+    // Runtime assigned values
+    private transient RidesStand mainStand;
+    private transient int standId;
+    private transient int cartId;
+    private transient double cartOffset;
+
+    public Cart(CustomModel cartModel){
+        this.cartModel = cartModel;
+    }
+
+    private Cart(CustomModel cartModel, List<Seat> seats){
+        this.cartModel = cartModel;
+        this.seats = seats;
+    }
 
     public void applyModel(){
         ItemStack itemStack = new ItemStack(cartModel.getMaterial());
@@ -46,6 +59,10 @@ public class Cart {
         meta.setCustomModelData(cartModel.getCustomModelData());
         itemStack.setItemMeta(meta);
         Objects.requireNonNull(mainStand.getBukkitStand().getEquipment()).setHelmet(itemStack);
+    }
+
+    public Cart createCopy(){
+        return new Cart(cartModel, new ArrayList<>(seats));
     }
 
 }

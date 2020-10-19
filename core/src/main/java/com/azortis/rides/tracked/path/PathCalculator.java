@@ -64,7 +64,6 @@ public class PathCalculator implements Runnable{
         long currentMaxTick = 0;
 
         while (pathIterator.hasNext()){
-            // Main Cart
             Vector direction = nextPoint.toVector().subtract(originPoint.toVector());
             double distance = direction.length();
             currentSpeed = originPoint.getSpeed();
@@ -130,6 +129,12 @@ public class PathCalculator implements Runnable{
         return rotationIncrements;
     }
 
+    private double fixRotation(double rotation){
+        if(rotation > 360)return rotation-360;
+        if(rotation < 0)return rotation+360;
+        return rotation;
+    }
+
     private Vector getSeatPosition(Vector cartPosition, Seat seat, double yaw, double pitch){
         double seatYaw = fixRotation((yaw + seat.getYawOffset()));
         double seatPitch = fixRotation((pitch + seat.getPitchOffset()));
@@ -139,12 +144,6 @@ public class PathCalculator implements Runnable{
         double dZ = Math.cos(seatYaw) * seat.getYawDistance();
 
         return cartPosition.add(new Vector(dX, dY, dZ));
-    }
-
-    private double fixRotation(double rotation){
-        if(rotation > 360)return rotation-360;
-        if(rotation < 0)return rotation+360;
-        return rotation;
     }
 
     public boolean isFinished() {

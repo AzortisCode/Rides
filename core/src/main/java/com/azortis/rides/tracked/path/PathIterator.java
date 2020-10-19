@@ -25,7 +25,7 @@ public class PathIterator implements Iterator<PathPoint> {
 
     private final Map<Integer, PathPoint> pathPoints;
     private final int size;
-    private int currentIndex = 0;
+    private int currentIndex = -1;
 
     public PathIterator(Map<Integer, PathPoint> pathPoints){
         this.pathPoints = pathPoints;

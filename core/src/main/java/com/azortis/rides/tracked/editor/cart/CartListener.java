@@ -226,8 +226,8 @@ public class CartListener implements Listener {
         Vector originPoint = cartEditor.getLocation().toVector();
         Vector nextPoint = new Vector(x, y, z);
         EulerAngle direction = MathUtils.getDirection(originPoint, nextPoint);
-        selectedSeat.setYawOffset(direction.getY());
-        selectedSeat.setPitchOffset(direction.getX());
+        selectedSeat.setYawOffset(Math.toDegrees(direction.getY()));
+        selectedSeat.setPitchOffset(Math.toDegrees(direction.getX()));
         Vector yawVector = new Vector(x, 0, z);
         selectedSeat.setYawDistance(yawVector.length());
         Vector pitchVector = new Vector(0, y, z);

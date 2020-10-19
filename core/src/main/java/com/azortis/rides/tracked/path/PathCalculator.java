@@ -18,6 +18,7 @@
 
 package com.azortis.rides.tracked.path;
 
+import com.azortis.rides.tracked.Cart;
 import com.azortis.rides.tracked.Seat;
 import com.azortis.rides.tracked.TrackedRide;
 import com.azortis.rides.tracked.Train;
@@ -60,14 +61,21 @@ public class PathCalculator implements Runnable{
 
         PathPoint originPoint = this.originPoint;
         PathPoint nextPoint = pathIterator.next();
-        double currentSpeed;
-        long currentMaxTick = 0;
+
+        Vector originPointDirection = getDirection(originPoint.getDirection());
+        Map<Cart, PathPoint> cartOriginPoints = new HashMap<>();
+        for (Cart cart : train.getCarts()){
+            Vector cartOrigin = originPointDirection.multiply(-cart.getCartOffset());
+            cartOriginPoints.put(cart, originPoint.setLocation(cartOrigin.getX(), cartOrigin.getY(), cartOrigin.getZ()));
+        }
+
+        long currentMaxTicks = 0;
 
         while (pathIterator.hasNext()){
             Vector direction = nextPoint.toVector().subtract(originPoint.toVector());
             double distance = direction.length();
-            currentSpeed = originPoint.getSpeed();
-            double maxTicks = distance / currentSpeed;
+            double speed = originPoint.getSpeed();
+            double maxTicks = distance / speed;
             long roundedMaxTicks = Math.round(maxTicks);
 
             double originYaw = originPoint.getYaw();
@@ -88,27 +96,83 @@ public class PathCalculator implements Runnable{
                 currentSeatOrigins.put(seat, getSeatPosition(originPoint.toVector(), seat, originYaw, originPitch));
             }
             for (int i = 1; i <= roundedMaxTicks; i++) {
-                directionPathMap.get(1).put((currentMaxTick + i), mainCartForce);
+                directionPathMap.get(1).put((currentMaxTicks + i), mainCartForce);
 
                 double yaw = fixRotation((originYaw + yawIncrements * i));
                 double pitch = fixRotation((originPitch + pitchIncrements * i));
                 double roll = fixRotation((originRoll + rollIncrements * i));
 
                 EulerAngle modelRotation = new EulerAngle(Math.toRadians(yaw), Math.toRadians(pitch), Math.toRadians(roll));
-                rotationsPathMap.get(1).put((currentMaxTick + i), modelRotation);
+                rotationsPathMap.get(1).put((currentMaxTicks + i), modelRotation);
 
                 Vector cartPosition = originPoint.toVector().add(mainCartForce.multiply(i));
                 for (Seat seat : train.getMainCart().getSeats()){
                     Vector nextSeatPosition = getSeatPosition(cartPosition, seat, yaw, pitch);
                     Vector seatForce = nextSeatPosition.subtract(currentSeatOrigins.get(seat));
-                    directionPathMap.get(seat.getStandId()).put((currentMaxTick + i), seatForce);
+                    directionPathMap.get(seat.getStandId()).put((currentMaxTicks + i), seatForce);
                     currentSeatOrigins.remove(seat);
                     currentSeatOrigins.put(seat, nextSeatPosition);
                 }
 
             }
 
-            currentMaxTick += roundedMaxTicks;
+            for (Cart cart : train.getCarts()){
+                double calculatedDistance = 0;
+                int index = pathIterator.getCurrentIndex() - 1;
+                PathPoint cartOriginPoint = cartOriginPoints.get(cart);
+                PathPoint cartNextPoint = null;
+                PathPoint point2 = nextPoint;
+                while (calculatedDistance < cart.getCartOffset()){
+                    PathPoint point = pathIterator.getPoint(index);
+                    if(point.toVector().distance(point2.toVector()) >= (cart.getCartOffset() - calculatedDistance)){
+                        double remainingDistance = cart.getCartOffset() - calculatedDistance;
+                        Vector vector = point2.toVector().subtract(point.toVector());
+                        double distanceFromPointToNextCartPoint = vector.length() - remainingDistance;
+                        Vector vector1 = vector.normalize().multiply(distanceFromPointToNextCartPoint);
+
+                        Vector nextCartPosition = point.toVector().add(vector1);
+                        double distancePercentage = ((vector.length() - distanceFromPointToNextCartPoint) / vector.length());
+
+                        double x = nextCartPosition.getX();
+                        double y = nextCartPosition.getY();
+                        double z = nextCartPosition.getZ();
+                        double nextSpeed = pathIterator.getPoint(pathIterator.getCurrentIndex() + 1).getSpeed();
+                        double yaw = getRotation(point.getYaw(), point2.getYaw(), distancePercentage);
+                        double pitch = getRotation(point.getPitch(), point2.getPitch(), distancePercentage);
+                        double roll = getRotation(point.getRoll(), point2.getRoll(), distancePercentage);
+                        cartNextPoint = new PathPoint(x, y, z, nextSpeed, yaw, pitch, roll);
+                        calculatedDistance = cart.getCartOffset(); // To stop the loop...
+                    }else{
+                        calculatedDistance += point.toVector().distance(nextPoint.toVector());
+                        point2 = point;
+                        index--;
+                    }
+                }
+                assert cartNextPoint != null;
+                Vector cartDirection = cartNextPoint.toVector().subtract(cartOriginPoint.toVector());
+                double cartDistance = cartDirection.length();
+
+                double cartOriginYaw = cartOriginPoint.getYaw();
+                double cartOriginPitch = cartOriginPoint.getPitch();
+                double cartOriginRoll = cartOriginPoint.getRoll();
+
+                double cartTargetYaw = cartNextPoint.getYaw();
+                double cartTargetPitch = cartNextPoint.getPitch();
+                double cartTargetRoll = cartNextPoint.getRoll();
+
+                double cartYawIncrements = getRotationIncrements(cartOriginYaw, cartTargetYaw, roundedMaxTicks);
+                double cartPitchIncrements = getRotationIncrements(cartOriginPitch, cartTargetPitch, roundedMaxTicks);
+                double cartRollIncrements = getRotationIncrements(cartOriginRoll, cartTargetRoll, roundedMaxTicks);
+
+                Vector cartForce = cartDirection.normalize().multiply((cartDistance / roundedMaxTicks));
+                Map<Seat, Vector> currentCartSeatOrigins = new HashMap<>();
+
+
+                cartOriginPoints.remove(cart);
+                cartOriginPoints.put(cart, cartNextPoint);
+            }
+
+            currentMaxTicks += roundedMaxTicks;
             originPoint = nextPoint;
             nextPoint = pathIterator.next();
         }
@@ -129,6 +193,19 @@ public class PathCalculator implements Runnable{
         return rotationIncrements;
     }
 
+    private double getRotation(double originRotation, double targetRotation, double percentage){
+        double rotation = 0;
+        double rotationSubtract = Math.abs(originRotation - targetRotation);
+        if(targetRotation < originRotation) targetRotation+=360;
+        double rotationAdd = targetRotation - originRotation;
+        if(rotationSubtract < rotationAdd){
+            rotation = originRotation - (rotationSubtract * percentage);
+        }else if(rotationSubtract > rotationAdd){
+            rotation = originRotation + (rotationAdd * percentage);
+        }
+        return fixRotation(rotation);
+    }
+
     private double fixRotation(double rotation){
         if(rotation > 360)return rotation-360;
         if(rotation < 0)return rotation+360;
@@ -144,6 +221,17 @@ public class PathCalculator implements Runnable{
         double dZ = Math.cos(seatYaw) * seat.getYawDistance();
 
         return cartPosition.add(new Vector(dX, dY, dZ));
+    }
+
+    private Vector getDirection(EulerAngle direction){
+        double yaw = direction.getY();
+        double pitch = direction.getX();
+
+        double dX = -Math.sin(yaw);
+        double dY = Math.cos(pitch);
+        double dZ = Math.cos(yaw);
+
+        return new Vector(dX, dY, dZ);
     }
 
     public boolean isFinished() {

@@ -43,6 +43,18 @@ public class PathIterator implements Iterator<PathPoint> {
         return pathPoints.get(currentIndex);
     }
 
+    public PathPoint getPoint(int index){
+        return pathPoints.get(index);
+    }
+
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
     public void reset(){
         currentIndex = 0;
     }

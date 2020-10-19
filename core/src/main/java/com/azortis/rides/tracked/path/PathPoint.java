@@ -20,6 +20,7 @@ package com.azortis.rides.tracked.path;
 
 import com.azortis.rides.tracked.TrackedRide;
 import lombok.Getter;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 @Getter
@@ -66,6 +67,8 @@ public class PathPoint {
         return new Vector(x,y,z);
     }
 
-    
+    public EulerAngle getDirection(){
+        return new EulerAngle(Math.toRadians(pitch), Math.toRadians(yaw), 0);
+    }
 
 }

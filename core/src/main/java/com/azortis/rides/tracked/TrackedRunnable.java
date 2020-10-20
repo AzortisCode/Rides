@@ -18,13 +18,13 @@
 
 package com.azortis.rides.tracked;
 
-import com.azortis.rides.tracked.path.PathCache;
+import com.azortis.rides.tracked.path.BakedPath;
 
 public class TrackedRunnable implements Runnable{
 
 
 
-    public TrackedRunnable(TrackedRide trackedRide, PathCache pathCache){
+    public TrackedRunnable(TrackedRide trackedRide, BakedPath bakedPath){
 
     }
 

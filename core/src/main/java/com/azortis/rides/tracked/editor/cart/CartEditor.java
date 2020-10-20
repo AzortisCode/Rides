@@ -37,6 +37,7 @@ public class CartEditor implements Editor<Cart> {
     private final Rides plugin;
     private final Cart cart;
     private final Player editor;
+    private final String name;
     private final int sessionId;
     private final Location location;
     private final CartVisualizer visualizer;
@@ -46,10 +47,11 @@ public class CartEditor implements Editor<Cart> {
     @Setter
     private int selectedSeat = 0;
 
-    public CartEditor(Rides plugin, Cart cart, Player editor, int sessionId, Location location){
+    public CartEditor(Rides plugin, Cart cart, Player editor, String name, int sessionId, Location location){
         this.plugin = plugin;
         this.cart = cart;
         this.editor = editor;
+        this.name = name;
         this.sessionId = sessionId;
         this.location = location;
 
@@ -83,6 +85,11 @@ public class CartEditor implements Editor<Cart> {
     }
 
     @Override
+    public Class<?> getType() {
+        return Cart.class;
+    }
+
+    @Override
     public void save(){
         // Stop the other 2 classes.
         HandlerList.unregisterAll(cartListener);
@@ -97,7 +104,7 @@ public class CartEditor implements Editor<Cart> {
         }
 
         // End Editing session
-
+        plugin.getTrackManager().saveEdits(sessionId);
     }
 
 }

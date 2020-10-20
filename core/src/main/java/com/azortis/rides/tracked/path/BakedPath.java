@@ -18,29 +18,26 @@
 
 package com.azortis.rides.tracked.path;
 
+import lombok.Getter;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
-public class PathCache implements Serializable {
-    private static final long serialVersionUID = 3191402257770448636L;
+@Getter
+public class BakedPath implements Serializable {
+    private static final long serialVersionUID = -8871575497702255099L;
 
-    private final Map<Integer, DirectionPath> directionPathMap;
-    private final Map<Integer, RotationPath> rotationPathMap;
+    private final Map<Integer, DirectionPath> directionPathMap = new HashMap<>();
+    private final Map<Integer, RotationPath> rotationPathMap = new HashMap<>();
+    private final long maxTicks;
 
-    public PathCache(Map<Integer, DirectionPath> directionPathMap, Map<Integer, RotationPath> rotationPathMap) {
-        this.directionPathMap = directionPathMap;
-        this.rotationPathMap = rotationPathMap;
-    }
-
-    public Map<Integer, DirectionPath> getDirectionPathMap() {
-        return directionPathMap;
-    }
-
-    public Map<Integer, RotationPath> getRotationPathMap() {
-        return rotationPathMap;
+    public BakedPath(Map<Integer, Map<Long, Vector>> directionPathMap, Map<Integer, Map<Long, EulerAngle>> rotationPathMap, long maxTicks) {
+        directionPathMap.forEach((integer, vectorMap) -> this.directionPathMap.put(integer, new DirectionPath(vectorMap)));
+        rotationPathMap.forEach((integer, longEulerAngleMap) -> this.rotationPathMap.put(integer, new RotationPath(longEulerAngleMap)));
+        this.maxTicks = maxTicks;
     }
 
     public static class DirectionPath {

@@ -29,7 +29,7 @@ public class PathIterator implements Iterator<PathPoint> {
 
     public PathIterator(Map<Integer, PathPoint> pathPoints){
         this.pathPoints = pathPoints;
-        this.size = pathPoints.size();
+        this.size = pathPoints.size() - 1;
     }
 
     @Override
@@ -41,6 +41,10 @@ public class PathIterator implements Iterator<PathPoint> {
     public PathPoint next() {
         currentIndex++;
         return pathPoints.get(currentIndex);
+    }
+
+    public boolean isLast(){
+        return currentIndex == size;
     }
 
     public PathPoint getPoint(int index){

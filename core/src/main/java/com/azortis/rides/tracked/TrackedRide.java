@@ -18,6 +18,7 @@
 
 package com.azortis.rides.tracked;
 
+import com.azortis.rides.tracked.path.BakedPath;
 import com.azortis.rides.tracked.path.PathMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,13 +30,16 @@ public class TrackedRide {
 
     private final String name;
     private boolean loadOnStart;
+    private boolean spawnOnStart;
     private Location originLocation;
     private String trainFile;
     private String pathFile;
 
     // Runtime assigned values.
     private transient boolean loaded;
+    private transient boolean running;
     private transient PathMap pathMap;
+    private transient BakedPath bakedPath;
     private transient Train train;
 
     public TrackedRide(String name){

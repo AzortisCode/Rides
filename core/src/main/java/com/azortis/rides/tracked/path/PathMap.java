@@ -58,8 +58,8 @@ public class PathMap {
         pathPoints.put(index, newPoint);
     }
 
-    public int size(){
-        return pathPoints.size();
+    public int getLastIndex(){
+        return pathPoints.size() - 1; // Index starts at 0
     }
 
     public Map<Integer, PathPoint> getPathPoints() {

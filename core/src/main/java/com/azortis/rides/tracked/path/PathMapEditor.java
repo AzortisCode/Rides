@@ -42,6 +42,9 @@ public class PathMapEditor {
     public PathMapEditor(Vector originsLocation){
         this.originsLocation = originsLocation;
         this.pathMap = new PathMap();
+        this.currentIndex = 0;
+        this.pathMap.addPoint(currentIndex, new PathPoint(originsLocation.getX(), originsLocation.getY(), originsLocation.getZ(), 0 , 0 , 0 , 0));
+        this.currentPoint = pathMap.getPoint(currentIndex);
     }
 
     /**
@@ -53,6 +56,8 @@ public class PathMapEditor {
     public PathMapEditor(Vector originsLocation, PathMap pathMap){
         this.originsLocation = originsLocation;
         this.pathMap = pathMap;
+        this.currentIndex = pathMap.getLastIndex();
+        this.currentPoint = pathMap.getPoint(currentIndex);
     }
 
     /**
@@ -71,7 +76,7 @@ public class PathMapEditor {
         if(appendCurrentIndex){
             currentIndex++;
         }else{
-            currentIndex = pathMap.size() + 1;
+            currentIndex = pathMap.getLastIndex() + 1;
         }
         pointLocation = pointLocation.subtract(originsLocation);
         currentPoint = new PathPoint(pointLocation.getX(), pointLocation.getY(), pointLocation.getZ(), 0, 0, 0 ,0);
@@ -88,7 +93,7 @@ public class PathMapEditor {
      * @return PathEditor instance.
      */
     public PathMapEditor removePoint(){
-        if(currentIndex > pathMap.size()){
+        if(currentIndex > pathMap.getLastIndex()){
             currentIndex--;
         }else{
             pathMap.removePoint(currentIndex);

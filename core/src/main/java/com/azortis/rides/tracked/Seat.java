@@ -35,6 +35,7 @@ public class Seat {
     // Runtime assigned values
     private transient RidesStand stand;
     private transient int standId;
+    private transient boolean locked;
 
     public Seat(float yawOffset, double yawDistance, float pitchOffset, double pitchDistance) {
         this.yawOffset = yawOffset;
@@ -42,5 +43,10 @@ public class Seat {
         this.pitchOffset = pitchOffset;
         this.pitchDistance = pitchDistance;
     }
+
+    public boolean hasPassenger(){
+        return stand.getBukkitStand().getPassengers().size() > 0;
+    }
+
 
 }

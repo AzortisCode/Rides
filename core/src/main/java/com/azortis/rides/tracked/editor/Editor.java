@@ -24,9 +24,11 @@ public interface Editor<T> {
 
     Player getEditor();
 
-    int getSessionId();
+    String getName();
 
     T getResult();
+
+    Class<?> getType();
 
     void save();
 

@@ -19,8 +19,12 @@
 package com.azortis.rides.tracked;
 
 import com.azortis.rides.Rides;
+import com.azortis.rides.tracked.editor.Editor;
+import com.azortis.rides.tracked.editor.cart.CartEditor;
 import com.azortis.rides.tracked.path.PathMap;
 import lombok.Getter;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +37,9 @@ public class TrackManager {
     private final Map<String, PathMap> pathMaps = new HashMap<>();
     private final Map<String, Train> trains = new HashMap<>();
     private final Map<String, Cart> carts = new HashMap<>();
+
+    private final Map<Integer, Editor<?>> editSessions = new HashMap<>();
+    private int editSessionIds = 1;
 
     public TrackManager(Rides plugin){
         this.plugin = plugin;
@@ -72,11 +79,41 @@ public class TrackManager {
                     }
                 }
 
+                if(trackedRide.isSpawnOnStart()){
+
+                }
+
             }else{
                 trackedRide.setLoaded(false);
             }
         }
 
+    }
+
+    public boolean edit(Player editor, String objectName, Class<?> objectType){
+        if(objectType == PathMap.class){
+
+        }else if(objectType == Train.class){
+
+        } else if(objectType == Cart.class){
+            if(carts.containsKey(objectName)) {
+                Cart cart = carts.get(objectName);
+                Location location = editor.getLocation();
+                editSessions.put(editSessionIds, new CartEditor(plugin, cart.createCopy(), editor, objectName, editSessionIds, location));
+                editSessionIds++;
+            }
+        }
+        return false;
+    }
+
+    public void saveEdits(int sessionId){
+        if(editSessions.containsKey(sessionId)){
+            Editor<?> editor = editSessions.get(sessionId);
+            if(editor.getType() == Cart.class){
+                Cart cart = (Cart) editor.getResult();
+
+            }
+        }
     }
 
 }
